@@ -8,18 +8,18 @@ get_shas () {
     url=$1
     gitapi=$2
     branch=$3
-    base_sha=$(curl -sS -H "$app" $gitapi | jq -r '.commit.sha')
+    base_sha=$(curl -sS -H "$app" "$gitapi" | jq -r '.commit.sha')
     workspace=$4
-    cd $workspace
-    git remote add upstream $url
-    git fetch -q upstream $branch
-    common=$(git merge-base $base_sha @)
-    echo $common $base_sha $workspace
+    cd "$workspace"
+    git remote add upstream "$url"
+    git fetch -q upstream "$branch"
+    common=$(git merge-base "$base_sha" @)
+    echo "$common" "$base_sha" "$workspace"
     if [[ "$common" != "$base_sha" ]]; then
         printf "%s\n\n" "** $workspace **NOT** up to date"
         flag_sync=false
     fi
-    cd $cwd
+    cd "$cwd"
 }
 
 flag_sync=true
@@ -91,7 +91,7 @@ for submodule in $submodules; do
     branch=${branches[$submodule]}
     workspace=${GITHUB_WORKSPACE}'/'${paths[$submodule]}
     gitapi=$(echo "$url" | sed 's/github.com/api.github.com\/repos/g')'/branches/'$branch
-    get_shas $url $gitapi $branch $workspace
+    get_shas "$url" "$gitapi" "$branch" "$workspace"
 
     if [[ "$flag_sync" == "false" ]]; then
        echo "** ${GITHUB_WORKSPACE} **NOT** up to date"
