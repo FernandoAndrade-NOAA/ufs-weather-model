@@ -14,7 +14,7 @@ jobs:
   Spack:
     strategy:
       matrix:
-        # See ci/package.py for variant definitions.
+        # See .github/scripts/package.py for variant definitions.
         config:
         - {
             os: "ubuntu-24.04",
@@ -48,7 +48,7 @@ jobs:
         package-name: ufs-weather-model
         # ufs-weather-model Spack recipe variants, plus additional package constraints:
         package-variants: app=${{ matrix.config.app }} ccpp_suites=${{ matrix.config.ccpp_suites }} ${{ matrix.config.other-variants }}
-        custom-recipe: ci/package.py
+        custom-recipe: .github/scripts/package.py
         spack-compiler: gcc@13
         spack-test-flag: '' # disable 'make test' for Spack
         use-common-build-cache: true
@@ -60,7 +60,7 @@ jobs:
 
   # The recipe-check job validates the Spack recipe by making sure each CMake
   # build option is represented. If this check fails due to the addition of a
-  # new CMake option, ci/package.py should be updated in order to make that
+  # new CMake option, .github/scripts/package.py should be updated in order to make that
   # new build option configurable through Spack.
   recipe-check:
 
