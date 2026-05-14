@@ -40,7 +40,7 @@ jobs:
           git clone -q -b $head_brc $head_url .
           git checkout -q $head_sha
           git submodule -q update --init --recursive
-          cd ${{ github.workspace }}/tests/ci
+          cd ${{ github.workspace }}/.github/scripts/
           url=$GITHUB_API_URL/repos/$GITHUB_REPOSITORY
           pr_number=$(curl -sS -H $app $url/pulls \
             | jq -r '.[] | select(.head.sha == "'"$head_sha"'") | .number')
